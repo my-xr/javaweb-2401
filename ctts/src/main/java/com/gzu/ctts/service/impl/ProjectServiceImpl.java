@@ -11,13 +11,13 @@ import java.util.List;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-
     @Autowired
     private ProjectMapper projectMapper;
 
     @Override
     public void addProject(Project project) {
         projectMapper.insert(project);
+        System.out.println(project.getId());
     }
 
     @Override
@@ -40,5 +40,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectById(Long id) {
         return projectMapper.selectById(id);
+    }
+
+    @Override
+    public List<Project> getProjectByTitle(String title) {
+        return projectMapper.getByTitle(title);
     }
 }

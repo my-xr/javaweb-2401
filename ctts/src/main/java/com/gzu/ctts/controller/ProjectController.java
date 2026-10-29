@@ -22,6 +22,7 @@ public class ProjectController {
         Project project = new Project();
         BeanUtils.copyProperties(projectDTO, project);
         projectService.addProject(project);
+        System.out.println(project.getId());
         return Result.success("Project added successfully");
     }
 
@@ -50,5 +51,9 @@ public class ProjectController {
         return Result.success(projectService.getAllProjects());
     }
 
+    @GetMapping("/title")
+    public Result<List<Project>> getProjectByTitle(@RequestParam String title) {
+        return Result.success(projectService.getProjectByTitle(title));
+    }
 
 }
