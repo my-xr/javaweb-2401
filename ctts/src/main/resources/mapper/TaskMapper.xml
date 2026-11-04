@@ -4,12 +4,47 @@
 
 <mapper namespace="com.gzu.ctts.mapper.TaskMapper">
 
+    <sql id="columns">
+        id, project_id, title, description, deadline, total_score, status, create_time, update_time
+    </sql>
+
     <select id="getById" resultType="com.gzu.ctts.entity.Task">
-        SELECT id, project_id, title, description, deadline, total_score, status, create_time, update_time FROM task WHERE id = #{id}
+        SELECT
+        <include refid="columns"/>
+        FROM task WHERE id = #{id}
     </select>
 
     <update id="update" parameterType="com.gzu.ctts.entity.Task">
-        UPDATE task SET project_id = #{projectId}, title = #{title}, description = #{description}, deadline = #{deadline}, total_score = #{totalScore}, status = #{status}, update_time = #{updateTime} WHERE id = #{id}
+        UPDATE task SET project_id = #{projectId}, title = #{title}, description = #{description}, deadline =
+        #{deadline}, total_score = #{totalScore}, status = #{status}, update_time = #{updateTime} WHERE id = #{id}
     </update>
+
+    <select id="selectByOptions" resultType="com.gzu.ctts.entity.Task">
+        SELECT <include refid="columns"></include> FROM task
+        <where>
+            <if test="projectId != null">
+                AND project_id = #{projectId}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByStatusList" resultType="com.gzu.ctts.entity.Task">
+        SELECT <include refid="columns"></include> FROM task
+
+        <where>
+            <if test="statusList != null and statusList.size > 0">
+                status IN
+                <foreach collection="statusList" item="p" open="(" close=")" separator=",">
+                    #{p}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
 </mapper>

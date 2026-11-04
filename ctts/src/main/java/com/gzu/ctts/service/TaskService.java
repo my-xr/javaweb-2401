@@ -14,4 +14,8 @@ public interface TaskService {
 
     void update(Task task);
 
+    List<Task> getByOptions(Long projectId, Integer status, String title);
+
+    List<Task> getTaskListByStatusList(List<Integer> statusList);
+
 }

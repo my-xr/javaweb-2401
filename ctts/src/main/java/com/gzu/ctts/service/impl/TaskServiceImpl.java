@@ -34,4 +34,14 @@ public class TaskServiceImpl implements TaskService {
     public void update(Task task) {
         taskMapper.update(task);
     }
+
+    @Override
+    public List<Task> getByOptions(Long projectId, Integer status, String title) {
+        return taskMapper.selectByOptions(projectId, status, title);
+    }
+
+    @Override
+    public List<Task> getTaskListByStatusList(List<Integer> statusList) {
+        return taskMapper.selectByStatusList(statusList);
+    }
 }

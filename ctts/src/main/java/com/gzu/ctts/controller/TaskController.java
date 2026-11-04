@@ -50,4 +50,14 @@ public class TaskController {
         return Result.success("任务更新成功");
     }
 
+    @GetMapping("/getByOptions")
+    public Result<List<Task>> getByOptions(@RequestParam(required = false) Long projectId, @RequestParam(required = false) Integer status, @RequestParam(required = false) String title) {
+        return Result.success(taskService.getByOptions(projectId, status, title));
+    }
+
+    @GetMapping("/getTaskListByStatusList")
+    public Result<List<Task>> getTaskListByStatusList(@RequestParam List<Integer> statusList) {
+        return Result.success(taskService.getTaskListByStatusList(statusList));
+    }
+
 }
