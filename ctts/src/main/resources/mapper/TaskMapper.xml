@@ -4,6 +4,19 @@
 
 <mapper namespace="com.gzu.ctts.mapper.TaskMapper">
 
+    <resultMap id="rm" type="com.gzu.ctts.entity.Task">
+        <id property="id" column="id"/>
+        <result column="project_id" property="projectId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="deadline" property="deadline"/>
+        <result column="total_score" property="totalScore"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+
     <sql id="columns">
         id, project_id, title, description, deadline, total_score, status, create_time, update_time
     </sql>
@@ -43,6 +56,66 @@
                 <foreach collection="statusList" item="p" open="(" close=")" separator=",">
                     #{p}
                 </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDataByOptions" resultMap="rm">
+        SELECT <include refid="columns"></include> FROM task
+        <where>
+            <if test="taskDTO.projectId != null">
+                AND project_id = #{taskDTO.projectId}
+            </if>
+            <if test="taskDTO.title !=null and taskDTO.title != ''">
+                AND title LIKE CONCAT('%', #{taskDTO.title}, '%')
+            </if>
+            <if test="taskDTO.description !=null and taskDTO.description != ''">
+                AND description LIKE CONCAT('%', #{taskDTO.description}, '%')
+            </if>
+            <if test="taskDTO.deadline != null">
+                AND deadline = #{taskDTO.deadline}
+            </if>
+            <if test="taskDTO.totalScore != null">
+                AND total_score = #{taskDTO.totalScore}
+            </if>
+            <if test="taskDTO.status != null">
+                AND status = #{taskDTO.status}
+            </if>
+            <if test="taskDTO.createTime != null">
+                AND create_time = #{taskDTO.createTime}
+            </if>
+            <if test="taskDTO.updateTime != null">
+                AND update_time = #{taskDTO.updateTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPageVo" resultType="com.gzu.ctts.entity.Task">
+        SELECT <include refid="columns"/> FROM task
+        <where>
+            <if test="taskDTO.projectId != null">
+                AND project_id = #{taskDTO.projectId}
+            </if>
+            <if test="taskDTO.title !=null and taskDTO.title != ''">
+                AND title LIKE CONCAT('%', #{taskDTO.title}, '%')
+            </if>
+            <if test="taskDTO.description !=null and taskDTO.description != ''">
+                AND description LIKE CONCAT('%', #{taskDTO.description}, '%')
+            </if>
+            <if test="taskDTO.deadline != null">
+                AND deadline = #{taskDTO.deadline}
+            </if>
+            <if test="taskDTO.totalScore != null">
+                AND total_score = #{taskDTO.totalScore}
+            </if>
+            <if test="taskDTO.status != null">
+                AND status = #{taskDTO.status}
+            </if>
+            <if test="taskDTO.createTime != null">
+                AND create_time = #{taskDTO.createTime}
+            </if>
+            <if test="taskDTO.updateTime != null">
+                AND update_time = #{taskDTO.updateTime}
             </if>
         </where>
     </select>

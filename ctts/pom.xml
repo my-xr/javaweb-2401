@@ -48,6 +48,12 @@
             <version>3.5.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.17</version>
+        </dependency>
+
         <!-- Knife4j for Spring Boot 3 (OpenAPI 3 Jakarta) -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
