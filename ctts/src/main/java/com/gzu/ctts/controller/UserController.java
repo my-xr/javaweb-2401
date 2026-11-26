@@ -3,6 +3,7 @@ package com.gzu.ctts.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gzu.ctts.common.Result;
+import com.gzu.ctts.dto.UserDTO;
 import com.gzu.ctts.entity.User;
 import com.gzu.ctts.service.UserService;
 import com.gzu.ctts.vo.UserVO;
@@ -27,6 +28,12 @@ public class UserController {
     public Result<List<UserVO>> getAllUsers(@RequestParam int pageNum, @RequestParam int pageSize) {
         IPage<User> page = new Page<>(pageNum, pageSize);
         return Result.success(userService.getByPage(page));
+    }
+
+    // 注册用户
+    @PostMapping
+    public Result<UserVO> registerUser(@RequestBody UserDTO userDTO) {
+        return Result.success(userService.registerUser(userDTO));
     }
 
 }

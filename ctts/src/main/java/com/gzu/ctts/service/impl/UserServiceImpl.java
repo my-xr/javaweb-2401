@@ -1,6 +1,7 @@
 package com.gzu.ctts.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.gzu.ctts.dto.UserDTO;
 import com.gzu.ctts.entity.Role;
 import com.gzu.ctts.entity.User;
 import com.gzu.ctts.mapper.RoleMapper;
@@ -11,8 +12,10 @@ import com.gzu.ctts.vo.UserRoleVO;
 import com.gzu.ctts.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     private final UserRoleMapper userRoleMapper;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final RoleMapper roleMapper;
 
@@ -83,6 +88,19 @@ public class UserServiceImpl implements UserService {
             userVO.setRoles(roleMap.getOrDefault(user.getId(), List.of()));
             return userVO;
         }).toList();
+    }
+
+    @Override
+    public UserVO registerUser(UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.insert(user);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        return userVO;
     }
 
     private Role toRole(UserRoleVO vo) {
