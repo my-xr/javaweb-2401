@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gzu.ctts.mapper.UserRoleMapper">
+
+    <resultMap type="com.gzu.ctts.vo.UserRoleVO" id="userRoleVO">
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <select id="getUserRoleVOListByUserIds" resultMap="userRoleVO">
+        SELECT
+        ur.user_id,
+        role.id AS role_id,
+        role.role_code,
+        role.role_name
+        FROM
+        sys_user_role ur
+        LEFT JOIN sys_role role ON ur.role_id = role.id
+        WHERE
+        ur.user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+</mapper>
